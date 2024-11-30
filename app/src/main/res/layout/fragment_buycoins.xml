@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--    tools:context=".AddDollars"-->
+
+
+    <TextView
+        android:id="@+id/errormsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buypts1000" />
+
+    <Button
+        android:id="@+id/canceltransfer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:text="CANCEL"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buypts50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="50 coins 9.99$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toTopOf="@+id/canceltransfer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <Button
+        android:id="@+id/buypts150"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="150 coins 24.99$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buypts50" />
+
+    <Button
+        android:id="@+id/buypts325"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="325 coins 49.99$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="@+id/buypts50"
+        app:layout_constraintTop_toBottomOf="@+id/buypts50" />
+
+    <Button
+        android:id="@+id/buypts700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="700 coins 99.99$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="@+id/buypts150"
+        app:layout_constraintTop_toBottomOf="@+id/buypts150" />
+
+    <Button
+        android:id="@+id/buypts500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="500 coins 43.49$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/buypts50"
+        app:layout_constraintTop_toBottomOf="@+id/buypts325" />
+
+    <Button
+        android:id="@+id/buypts1000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:width="160dp"
+        android:height="75dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:text="1000 coins for 80.99$"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/buypts150"
+        app:layout_constraintTop_toBottomOf="@+id/buypts700" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Balance">
+
+    <View
+        android:id="@+id/viewfuck"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <Button
+        android:id="@+id/storename"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:paddingLeft="35sp"
+        android:paddingRight="60sp"
+        android:text="StoreName"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="#4275B3"
+        app:layout_constraintBottom_toBottomOf="@+id/viewfuck"
+        app:layout_constraintStart_toStartOf="@+id/viewfuck"
+        app:layout_constraintTop_toTopOf="@+id/viewfuck" />
+
+    <Button
+        android:id="@+id/searchbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:background="@drawable/rounded_corner_solid_8dp"
+        android:paddingLeft="12sp"
+        android:paddingRight="40sp"
+        android:text="search"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:backgroundTint="#4275B3"
+        app:layout_constraintBottom_toBottomOf="@+id/viewfuck"
+        app:layout_constraintEnd_toEndOf="@+id/viewfuck"
+        app:layout_constraintTop_toTopOf="@+id/viewfuck" />
+
+    <TextView
+        android:id="@+id/textView42"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/rounded_corner_solid_4dp"
+        android:backgroundTint="@color/white"
+        android:elevation="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/storename"
+        app:layout_constraintEnd_toEndOf="@+id/storename"
+        app:layout_constraintTop_toTopOf="@+id/storename" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/viewfuck"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/viewfuck">
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/header"
+        android:name="com.infoempire.wavetoget.Header"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/activity_header" />
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/info"-->
+    <!--        android:name="com.infoempire.wavetoget.Info"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/viewfuck"-->
+    <!--        tools:layout="@layout/activity_info" />-->
+
+    <FrameLayout
+        android:id="@+id/infopage"
+        android:name="com.infoempire.wavetoget.Info"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewfuck" >
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/page"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/storemenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infopage">
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/storemenu"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4">
+
+        <Button
+            android:id="@+id/homebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="HOME"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#4275B3" />
+
+        <Button
+            android:id="@+id/activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            app:backgroundTint="#4275B3" />
+
+        <Button
+            android:id="@+id/redeembutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="REDEEM"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            app:backgroundTint="#4275B3" />
+
+        <Button
+            android:id="@+id/rewardsbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="REWARDS"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#4275B3" />
+
+        <Button
+            android:id="@+id/notesbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="NOTES"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#4275B3" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="9dp"
+        android:elevation="6dp"
+        android:src="@drawable/search"
+        app:layout_constraintBottom_toBottomOf="@+id/searchbutton"
+        app:layout_constraintEnd_toEndOf="@+id/viewfuck"
+        app:layout_constraintTop_toTopOf="@+id/searchbutton" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:elevation="7dp"
+        android:src="@drawable/cog_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/textView42"
+        app:layout_constraintEnd_toEndOf="@+id/textView42"
+        app:layout_constraintStart_toStartOf="@+id/textView42"
+        app:layout_constraintTop_toTopOf="@+id/textView42" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

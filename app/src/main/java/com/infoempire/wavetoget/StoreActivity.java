@@ -1,0 +1,346 @@
+package com.infoempire.wavetoget;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link StoreActivity#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class StoreActivity extends Fragment {
+
+    View view;
+    ImageView back;
+
+    ImageView backbut;
+    Boolean loading;
+    TextView pagenum;
+    TextView errortext;
+    ImageView next;
+    ImageView prev;
+    Integer pagecount = 0;
+    Integer maxpage = 0;
+    Button readAll;
+    Call<String> call;
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public StoreActivity() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment activity.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static StoreActivity newInstance(String param1, String param2) {
+        StoreActivity fragment = new StoreActivity();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (call !=null){
+            call.cancel(); //RxJava
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_store_activity, container, false);
+        loading = false;
+        backbut = view.findViewById(R.id.backbutton);
+        next = view.findViewById(R.id.nextarrow2);
+        prev = view.findViewById(R.id.prevarrow2);
+        pagenum = view.findViewById(R.id.pagenumber2);
+        back = view.findViewById(R.id.backbutton7);
+        errortext = view.findViewById(R.id.storeActivError);
+        readAll = view.findViewById(R.id.storereadallbtn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StoreSettingsPage1 frag = new StoreSettingsPage1();
+                getParentFragmentManager().beginTransaction().replace(R.id.page, frag).commit();
+            }
+        });
+        readAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, String> fields = new HashMap<>();
+                fields.put("action", "mark-all-read");
+                fields.put("session",  Account.session);
+                fields.put("store",  String.valueOf(StoreAccount.id));
+                fields.put("key", "KEY REMOVED");
+                Call<String> call = MainActivity.apiService.createPost(fields);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String _response = response.body();
+                        Log.d("Mark all read store", _response);
+                        if(!_response.equals("nosession") && !_response.equals("failed"))
+                        {
+                            GetStoreActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        errortext.setText("Unable to read all. Check internet connection");
+                        Log.d("read all store error", t.getMessage());
+                    }
+                });
+            }
+        });
+        GetStoreActivity();
+
+        return view;
+    }
+    private void GetStoreActivity() {
+        GetActivityCount();
+        Map<String, String> fields = new HashMap<>();
+        Log.d("test", String.valueOf(CustomerAccount.id));
+        fields.put("action", "get-transactions");
+        fields.put("session",  Account.session);
+        fields.put("store", String.valueOf(StoreAccount.id));
+        fields.put("page",  String.valueOf(pagecount));
+        fields.put("key", "KEY REMOVED");
+        call = MainActivity.apiService.createPost(fields);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String _response = response.body();
+                Log.d("store activity", _response);
+                loading = false;
+                if(!_response.equals("nosession") && !_response.equals("failed") && !_response.isEmpty())
+                {
+                    CustomerAccount.custactivity = new ArrayList<ActivityObj>();
+                    JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(_response);
+                        Log.d("activity response", _response);
+                        for (int i=0; i < jsonArray.length(); i++)
+                        {
+                            ActivityObj act = new ActivityObj();
+                            JSONObject oneObject = jsonArray.getJSONObject(i);
+                            // Pulling items from the array
+                            if (oneObject.optString("transactor_displayname").equals("null")){
+                                act.publishedby = "system";
+                            }
+                            else {
+                                act.publishedby = oneObject.optString("transactor_displayname");
+                            }
+                            act.date = oneObject.optString("created");
+                            act.description = oneObject.optString("description");
+                            if (1 == oneObject.getInt("read_by_store")) {
+                                act.wasRead = true;
+                            }
+                            act.id = oneObject.optString("id");
+                            CustomerAccount.custactivity.add(act);
+                        }
+                        LayoutInflater inf = getLayoutInflater();
+                        LinearLayout scrollViewLinearlayout = view.findViewById(R.id.lin); // The layout inside scroll view
+                        scrollViewLinearlayout.removeAllViews();
+                        for(int i = 0; i < CustomerAccount.custactivity.size(); i++) {
+                            Integer container = i;
+                            LinearLayout layout2 = new LinearLayout(getContext());
+                            layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            View item = inf.inflate(R.layout.activity_layout, null, false);
+                            layout2.setId(i);
+                            layout2.addView(item);
+                            scrollViewLinearlayout.addView(layout2);
+
+                            TextView iname = item.findViewById(R.id.messagetext);
+
+                            String desc = CustomerAccount.custactivity.get(i).description;
+                            iname.setText(desc);
+
+                            TextView date = item.findViewById(R.id.date);
+                            date.setText(CustomerAccount.custactivity.get(i).date);
+
+                            TextView publishedby = item.findViewById(R.id.publishedby);
+                            publishedby.setText(CustomerAccount.custactivity.get(i).publishedby);
+                            View dot = item.findViewById(R.id.markRead);
+                            if (!CustomerAccount.custactivity.get(i).wasRead){
+                                publishedby.setTypeface(null, Typeface.BOLD);
+                                date.setTypeface(null, Typeface.BOLD);
+                                iname.setTypeface(null, Typeface.BOLD);
+                            }
+                            else {
+                                dot.setVisibility(View.GONE);
+                            }
+                            item.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Map<String, String> fields = new HashMap<>();
+                                    Log.d("mark as read", CustomerAccount.custactivity.get(container).id);
+                                    fields.put("action", "mark-as-read");
+                                    fields.put("session",  Account.session);
+//        fields.put("store", String.valueOf(CustomerAccount.store));
+                                    fields.put("id",  CustomerAccount.custactivity.get(container).id);
+                                    fields.put("key", "KEY REMOVED");
+                                    Call<String> call = MainActivity.apiService.createPost(fields);
+                                    call.enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response) {
+                                            String _response = response.body();
+                                            Log.d("mark as read resp", _response);
+                                            if(!_response.equals("nosession") && !_response.equals("failed") && !_response.isEmpty())
+                                            {
+                                                dot.setVisibility(View.GONE);
+                                                publishedby.setTypeface(null, Typeface.NORMAL);
+                                                date.setTypeface(null, Typeface.NORMAL);
+                                                iname.setTypeface(null, Typeface.NORMAL);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+                                            Log.d("cant mark as read", t.getMessage());
+                                            errortext.setText("Unable to set as read. Check internet connection");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        loading = false;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                loading = false;
+                errortext.setText("Unable to load activities, check internet connection");
+                Log.d("activity problem", t.getMessage());
+            }
+        });
+    }
+    private void NextPage(){
+        pagecount++;
+        GetStoreActivity();
+    }
+    private void PrevPage(){
+        pagecount--;
+        GetStoreActivity();
+    }
+    private void GetActivityCount(){
+        Map<String, String> fields = new HashMap<>();
+        Log.d("test", String.valueOf(CustomerAccount.id));
+        fields.put("action", "get-transactions-count");
+        fields.put("session",  Account.session);
+        fields.put("store", String.valueOf(StoreAccount.id));
+        fields.put("key", "KEY REMOVED");
+        Call<String> call = MainActivity.apiService.createPost(fields);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String _response = response.body();
+                Log.d("max pages", _response);
+                if(!_response.equals("nosession") && !_response.equals("failed") && !_response.isEmpty())
+                {
+//                    try {
+//                        JSONObject jObject = new JSONObject(_response);
+//                        maxpage = jObject.optInt("page_count");
+                    maxpage = Integer.parseInt(_response);
+                    pagenum.setText("Page " + String.valueOf(pagecount+1) + "/" + String.valueOf(maxpage));
+                    if (pagecount==0){
+                        prev.setColorFilter(Color.parseColor("#8E8E93"));
+                    }
+                    else {
+                        prev.setColorFilter(Color.parseColor("#4275B3"));
+                        prev.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                PrevPage();
+                                prev.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    if (!(maxpage==(pagecount+1))){
+                        next.setColorFilter(Color.parseColor("#4275B3"));
+                        next.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NextPage();
+                                next.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        next.setColorFilter(Color.parseColor("#8E8E93"));
+                    }
+
+//                    } catch (JSONException ex) {
+//                        Log.d("Penis", ex.getMessage());
+//                        throw new RuntimeException(ex);
+//                    }
+
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
+    }
+}
